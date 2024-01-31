@@ -13,11 +13,6 @@ modules:
   - lpkg --unlock
   - apt update
 
-- name: remove-podman
-  type: shell
-  commands:
-  - apt remove -y podman
-
 - name: docker
   type: apt
   source:
