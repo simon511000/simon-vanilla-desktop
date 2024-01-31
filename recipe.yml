@@ -1,0 +1,38 @@
+base: ghcr.io/vanilla-os/desktop:main
+name: Simon Vanilla Desktop
+id: simon-vanilla-desktop
+labels:
+  maintainer: Simon Ledoux
+args:
+  DEBIAN_FRONTEND: noninteractive
+
+modules:
+- name: init-setup
+  type: shell
+  commands:
+  - lpkg --unlock
+  - apt update
+
+- name: docker
+  type: apt
+  source:
+    packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+
+- name: cleanup
+  type: shell
+  commands:
+  - apt autoremove -y
+  - apt clean
+  - lpkg --lock
+
+- name: cleanup2
+  type: shell
+  commands:
+    - rm -rf /tmp/*
+    - rm -rf /var/tmp/*
+    - rm -rf /sources
