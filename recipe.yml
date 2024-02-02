@@ -23,11 +23,12 @@ modules:
     - docker-buildx-plugin
     - docker-compose-plugin
 
-- name: code
+- name: other
   type: apt
   source:
     packages:
     - code
+    - btop
 
 - name: cleanup
   type: shell
