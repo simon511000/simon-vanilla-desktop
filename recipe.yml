@@ -43,7 +43,7 @@ modules:
 - name: remove-podman
   type: shell
   commands:
-    - apt remove podman
+    - apt remove -y podman
 
 - name: cleanup
   type: shell
