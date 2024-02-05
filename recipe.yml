@@ -45,6 +45,12 @@ modules:
   commands:
     - apt remove -y podman
 
+- name: package-modules
+  type: includes
+  includes:
+    - modules/50-install-debs
+    - modules/80-set-image-abroot-config
+
 - name: cleanup
   type: shell
   commands:
