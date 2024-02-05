@@ -40,11 +40,6 @@ modules:
     packages:
     - btop
 
-- name: remove-podman
-  type: shell
-  commands:
-    - apt remove -y podman
-
 - name: package-modules
   type: includes
   includes:
