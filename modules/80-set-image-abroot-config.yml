@@ -1,0 +1,12 @@
+name: add-image-name
+type: shell
+commands:
+  - IMAGE_NAME="$(cat /image-info/image-name)"
+  - DIFFER_URL="$(cat /image-info/differ-url)"
+  - echo custom image name "$IMAGE_NAME"
+  - echo custom image differ url "$DIFFER_URL"
+  - IMAGE_NAME_ESCAPED="$(echo $IMAGE_NAME | sed 's/\//\\\//g')"
+  - DIFFER_URL_ESCAPED="$(echo $DIFFER_URL | sed 's/\//\\\//g')"
+  - sed -i "s/name_changed_automatically_by_vib/$IMAGE_NAME_ESCAPED/g" /usr/share/abroot/abroot.json
+  - sed -i "s/differ_url_changed_automatically_by_vib/$DIFFER_URL_ESCAPED/g" /usr/share/abroot/abroot.json
+  - rm -rf /image-info

@@ -2,7 +2,7 @@ base: ghcr.io/vanilla-os/desktop:main
 name: Simon Vanilla Desktop
 id: simon-vanilla-desktop
 labels:
-  maintainer: Simon Ledoux
+  maintainer: self-maintained
 args:
   DEBIAN_FRONTEND: noninteractive
 
@@ -13,29 +13,53 @@ modules:
   - lpkg --unlock
   - apt update
 
-- name: docker
-  type: apt
-  source:
-    packages:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
-    - docker-buildx-plugin
-    - docker-compose-plugin
+- name: install-docker
+  type: shell
+  commands:
+    - install -m 0755 -d /etc/apt/keyrings
+    - curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+    - chmod a+r /etc/apt/keyrings/docker.asc
+    - echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list 
+    - apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-- name: other
+- name: install-code
+  type: shell
+  commands:
+    - apt-get install wget gpg
+    - wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    - install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    - echo \
+      "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list
+    - rm -f packages.microsoft.gpg
+    - apt update && apt install -y code
+
+- name: install-btop
   type: apt
   source:
     packages:
-    - code
     - btop
 
 - name: cleanup
   type: shell
   commands:
-  - apt autoremove -y
-  - apt clean
+  - apt-get autoremove -y
+  - apt-get clean
   - lpkg --lock
+
+- name: fsguard
+  type: fsguard
+  CustomFsGuard: false
+  FsGuardLocation: "/usr/sbin/FsGuard"
+  GenerateKey: true
+  FilelistPaths: ["/usr/bin"]
+  modules:
+    - name: remove-prev-fsguard
+      type: shell
+      commands:
+        - rm -rf /FsGuard 
+        - rm -f ./minisign.pub ./minisign.key 
+        - chmod +x /usr/sbin/init
 
 - name: cleanup2
   type: shell

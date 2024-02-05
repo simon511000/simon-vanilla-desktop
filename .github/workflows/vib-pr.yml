@@ -19,7 +19,7 @@ jobs:
         plugins: 'Vanilla-OS/vib-fsguard:v1.2-1'
 
     - name: Build the Docker image
-      run: docker image build -f Containerfile --tag simon511000/simon-vanilla-desktop .
+      run: docker image build -f Containerfile --tag testing .
 
     - uses: actions/upload-artifact@v4
       with:
