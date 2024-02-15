@@ -1,3 +1,4 @@
+# vib
 base: ghcr.io/vanilla-os/desktop:main
 name: Simon Vanilla Desktop
 id: simon-vanilla-desktop
