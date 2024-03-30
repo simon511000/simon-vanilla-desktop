@@ -47,6 +47,8 @@ modules:
     packages:
       - libvirt-daemon-system
       - virt-manager
+      - qemu
+      - qemu-kvm
 
 - name: pano-dependencies
   type: apt
