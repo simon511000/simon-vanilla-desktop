@@ -41,6 +41,13 @@ modules:
     packages:
     - btop
 
+- name: install-virt
+  type: apt
+  source:
+    packages:
+      - libvirt-daemon-system
+      - virt-manager
+
 - name: pano-dependencies
   type: apt
   source:
