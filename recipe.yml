@@ -41,13 +41,11 @@ modules:
     packages:
     - btop
 
-- name: install-virt
+- name: install-distrobox
   type: apt
   source:
     packages:
-      - libvirt-daemon-system
-      - virt-manager
-      - qemu-kvm
+      - distrobox
 
 - name: pano-dependencies
   type: apt
